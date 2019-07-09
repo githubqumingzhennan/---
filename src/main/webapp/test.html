@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="easyui/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <input type="checkbox" name="test" value="1"/>
+        <input type="checkbox" name="test" value="2"/>
+        <input type="button" onclick="getValues()"/>
+    </div>
+
+</body>
+<script>
+    function getValues() {
+        checkbox=$("input[name='test']");
+
+        check_val=[];
+        for (k in checkbox){
+            if(checkbox[k].checked){
+
+                check_val.push(checkbox[k].value);
+            }
+        }
+       /* $.post("/employee/test01",{values:"123"},function(result){
+
+            });*/
+
+        $.ajax({
+            type: "GET",
+            url: "/employee/test01",
+            contentType : 'application/json;charset=UTF-8',
+            data: {values:"123"},
+            dataType: "json",
+            success: function(data){
+
+            }
+        });
+
+        console.debug(check_val);
+    }
+</script>
+</html>

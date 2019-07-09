@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itsource.dao.StudentMessagesDao" >
+    <resultMap id="BaseResultMap" type="cn.itsource.domain.StudentMessages">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+        <result column="degree" property="degree" jdbcType="VARCHAR" />
+        <result column="companyName" property="companyName" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="DATE" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="salary" property="salary" jdbcType="VARCHAR" />
+        <result column="fl" property="fl" jdbcType="VARCHAR" />
+        <result column="flmx" property="flmx" jdbcType="VARCHAR" />
+        <result column="year_end_bonus" property="year_end_bonus" jdbcType="DOUBLE" />
+        <result column="elses" property="elses" jdbcType="VARCHAR" />
+        <result column="salary_detail" property="salary_detail" jdbcType="VARCHAR" />
+        <result column="salary_total" property="salary_total" jdbcType="VARCHAR" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total,grade
+    </sql>
+
+    <!-- 查询用户-->
+    <select id="queryByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from message.studentmessage
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询用户-->
+    <select id="getAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from studentmessage
+    </select>
+
+    <!-- 批量查询用户-->
+    <select id="queryAll" resultMap="BaseResultMap"
+            >
+        select
+        id
+        from studentmessage
+        <!-- where id in
+        <foreach collection="idList" item="userId" index="index" open="(" separator="," close=")">
+            #{userId,jdbcType=DECIMAL}
+        </foreach>-->
+    </select>
+
+    <!-- 批量查询用户-->
+    <select id="getSize" resultType="INTEGER" parameterType ="cn.itsource.domain.Query">
+        select
+        COUNT(id)
+        from studentmessage
+        <where>
+            <if test="name !=null and name !=''">
+                name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="schoolName !=null and schoolName !=''">
+                and schoolName LIKE concat(concat('%',#{schoolName}),'%')
+            </if>
+            <if test="companyName !=null and companyName !=''">
+                and companyName LIKE concat(concat('%',#{companyName}),'%')
+            </if>
+            <if test="minSalary !=null and minSalary !=''">
+                and salary > #{minSalary}
+            </if>
+            <if test="maxSalary !=null and maxSalary !=''">
+                and salary &lt; #{maxSalary}
+            </if>
+        </where>
+        <!-- where id in
+        <foreach collection="idList" item="userId" index="index" open="(" separator="," close=")">
+            #{userId,jdbcType=DECIMAL}
+        </foreach>-->
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="cn.itsource.domain.StudentMessages">
+        insert into studentmessage
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="degree != null" >
+                degree,
+            </if>
+            <if test="schoolName != null" >
+                schoolName,
+            </if>
+            <if test="companyName != null" >
+                companyName,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+            <if test="address != null" >
+                address,
+            </if>
+            <if test="salary != null" >
+                salary,
+            </if>
+            <if test="fl != null" >
+                fl,
+            </if>
+            <if test="flmx != null" >
+                flmx,
+            </if>
+            <if test="year_end_bonus != null" >
+                year_end_bonus,
+            </if>
+            <if test="elses != null" >
+                elses,
+            </if>
+            <if test="salary_detail != null" >
+                salary_detail,
+            </if>
+            <if test="salary_total != null" >
+                salary_total,
+            </if>
+            <if test="grade != null" >
+                grade
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="degree != null" >
+            #{degree,jdbcType=INTEGER},
+            </if>
+            <if test="schoolName != null" >
+                #{schoolName,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null" >
+                #{companyName,jdbcType=INTEGER},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=INTEGER},
+            </if>
+            <if test="address != null" >
+                #{address,jdbcType=INTEGER},
+            </if>
+            <if test="salary != null" >
+                #{salary,jdbcType=INTEGER},
+            </if>
+            <if test="fl != null" >
+                #{fl,jdbcType=INTEGER},
+            </if>
+            <if test="flmx != null" >
+                #{flmx,jdbcType=INTEGER},
+            </if>
+            <if test="year_end_bonus != null" >
+                #{year_end_bonus,jdbcType=INTEGER},
+            </if>
+            <if test="elses != null" >
+                #{elses,jdbcType=INTEGER}
+            </if>
+            <if test="salary_detail != null" >
+                #{salary_detail,jdbcType=INTEGER},
+            </if>
+            <if test="salary_total != null" >
+                #{salary_total,jdbcType=INTEGER},
+            </if>
+            <if test="grade != null" >
+                #{grade,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量插入用户 -->
+    <insert id="insertList" parameterType="java.util.List" >
+ <!--       insert into USER
+        (ID,
+        NAME,
+        PASSWORD,
+        AGE)
+        select A.* from
+        (
+        <foreach collection="list" item="user" index="index" separator="union">
+            select
+            #{user.id,jdbcType=INTEGER},
+            #{user.name,jdbcType=VARCHAR},
+            #{user.password,jdbcType=VARCHAR},
+            #{user.age,jdbcType=INTEGER}
+            from dual
+        </foreach>
+        ) A-->
+        insert into studentmessage (name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.name},#{item.schoolName},#{item.degree},#{item.companyName},#{item.date},#{item.address},#{item.salary},#{item.fl},#{item.flmx},#{item.year_end_bonus},#{item.elses},#{item.salary_detail},#{item.salary_total})
+        </foreach>
+    </insert>
+
+    <!-- 删除用户 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from studentmessage
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteUserByBatch" parameterType="java.util.Map" >
+        delete from user
+        where id IN
+        <foreach item="ids" collection="iList" open="(" separator="," close=")">
+            #{ids,jdbcType=DECIMAL}
+        </foreach>
+    </delete>
+
+    <!-- 更新用户 -->
+    <update id="updateByPrimaryKey" parameterType="cn.itsource.domain.StudentMessages" >
+        update studentmessage
+        <set >
+            <trim suffixOverrides="," >
+                <if test="id != null" >
+                    id=#{id,jdbcType=INTEGER},
+                </if>
+                <if test="name != null" >
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="schoolName != null" >
+                    schoolName=#{schoolName,jdbcType=VARCHAR},
+                </if>
+                <if test="degree != null" >
+                    degree=#{degree,jdbcType=VARCHAR},
+                </if>
+                <if test="companyName != null" >
+                    companyName=#{companyName,jdbcType=VARCHAR},
+                </if>
+                <if test="date != null" >
+                    date=#{date,jdbcType=DATE},
+                </if>
+                <if test="address != null" >
+                    address=#{address,jdbcType=VARCHAR},
+                </if>
+                <if test="salary != null" >
+                    salary=#{salary,jdbcType=DOUBLE},
+                </if>
+                <if test="fl != null" >
+                    fl=#{fl,jdbcType=VARCHAR},
+                </if>
+                <if test="flmx != null" >
+                    flmx=#{flmx,jdbcType=VARCHAR},
+                </if>
+                <if test="year_end_bonus != null" >
+                    year_end_bonus=#{year_end_bonus,jdbcType=VARCHAR},
+                </if>
+                <if test="elses != null" >
+                    elses=#{elses,jdbcType=VARCHAR}
+                </if>
+            </trim>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!-- 查询用户-->
+    <select id="search" resultMap="BaseResultMap" parameterType ="cn.itsource.domain.Query">
+        select
+        <include refid="Base_Column_List" />
+        from studentmessage
+        <where>
+            <if test="name !=null and name !=''">
+                name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="schoolName !=null and schoolName !=''">
+                and schoolName LIKE concat(concat('%',#{schoolName}),'%')
+            </if>
+            <if test="companyName !=null and companyName !=''">
+                and companyName LIKE concat(concat('%',#{companyName}),'%')
+            </if>
+            <if test="minSalary !=null and minSalary !=''">
+                and salary > #{minSalary}
+            </if>
+            <if test="maxSalary !=null and maxSalary !=''">
+                and salary &lt; #{maxSalary}
+            </if>
+
+        </where>
+        <if test="page !=null and rows !=null">
+            limit #{page},#{rows};
+        </if>
+
+    </select>
+    <!-- 查询用户-->
+    <select id="searchQuery" resultMap="BaseResultMap" parameterType ="cn.itsource.domain.Query">
+        select
+        <include refid="Base_Column_List" />
+        from studentmessage
+        <where>
+            <if test="name !=null and name !=''">
+                name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="schoolName !=null and schoolName !=''">
+                and schoolName LIKE concat(concat('%',#{schoolName}),'%')
+            </if>
+            <if test="companyName !=null and companyName !=''">
+                and companyName LIKE concat(concat('%',#{companyName}),'%')
+            </if>
+            <if test="minSalary !=null and minSalary !=''">
+                and salary > #{minSalary}
+            </if>
+            <if test="maxSalary !=null and maxSalary !=''">
+                and salary &lt; #{maxSalary}
+            </if>
+
+        </where>
+
+    </select>
+</mapper>

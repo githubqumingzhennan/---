@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itsource.dao.AudioDao" >
+    <resultMap id="BaseResultMap" type="cn.itsource.domain.Audio">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+        <result column="date" property="createTime" jdbcType="DATE" />
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name,path,date
+    </sql>
+
+    <!-- 查询用户-->
+    <select id="queryByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from audio
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询用户-->
+    <select id="getAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from audio
+    </select>
+
+    <!-- 批量查询用户-->
+    <select id="queryAll" resultMap="BaseResultMap"
+    >
+        select
+        <include refid="Base_Column_List" />
+        from audio
+        <!-- where id in
+        <foreach collection="idList" item="userId" index="index" open="(" separator="," close=")">
+            #{userId,jdbcType=DECIMAL}
+        </foreach>-->
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="cn.itsource.domain.StudentMessages">
+        insert into audio
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="path != null" >
+                path,
+            </if>
+            <if test="createTime != null" >
+                date
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="path != null" >
+                #{path,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=INTEGER}
+            </if>
+
+        </trim>
+    </insert>
+
+    <!-- 批量插入用户 -->
+    <insert id="insertList" parameterType="java.util.List" >
+        <!--       insert into USER
+               (ID,
+               NAME,
+               PASSWORD,
+               AGE)
+               select A.* from
+               (
+               <foreach collection="list" item="user" index="index" separator="union">
+                   select
+                   #{user.id,jdbcType=INTEGER},
+                   #{user.name,jdbcType=VARCHAR},
+                   #{user.password,jdbcType=VARCHAR},
+                   #{user.age,jdbcType=INTEGER}
+                   from dual
+               </foreach>
+               ) A-->
+        insert into audio (name,path,date)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.name},#{item.path},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <!-- 删除用户 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from audio
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteUserByBatch" parameterType="java.util.Map" >
+        delete from user
+        where id IN
+        <foreach item="ids" collection="iList" open="(" separator="," close=")">
+            #{ids,jdbcType=DECIMAL}
+        </foreach>
+    </delete>
+
+    <!-- 更新用户 -->
+    <update id="updateByPrimaryKey" parameterType="cn.itsource.domain.StudentMessages" >
+        update audio
+        <set >
+            <trim suffixOverrides="," >
+                <if test="id != null" >
+                    id=#{id,jdbcType=INTEGER},
+                </if>
+                <if test="name != null" >
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="path != null" >
+                    path=#{path,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null" >
+                    date=#{createTime,jdbcType=VARCHAR}
+                </if>
+
+            </trim>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!-- 传入的参数类型为map，此时无需使用map.get("key")去获得实际值，只需填入key值便可 -->
+    <select id="findByPage" parameterType="map" resultMap="BaseResultMap">
+        select name,path,date from audio
+        limit #{start},#{end}
+    </select>
+</mapper>
