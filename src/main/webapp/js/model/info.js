@@ -1,4 +1,4 @@
-﻿//单独修改提示
+//单独修改提示
 $.fn.validatebox.extensions.rules.integerRange.message = "年龄必需在 {0} 与 {1} 之间";
 //自定义验证功能
 // extend the 'equals' rule
@@ -40,10 +40,10 @@ $(function () {
     //把所有会多次用到的组件放到最上面
     var datagrid = $('#dataGrid'); //数据展示
     var employeeDialog = $('#employeeDialog'); //弹框
+    var updatePasswordDialog=$('#updatePasswordDialog');
     var searchForm = $('#searchForm'); //查询表单
     var editForm = $('#editForm'); //添加与修改表单
-
-
+    var editForm1 = $('#editForm1'); //添加与修改表单
     //为所有有data-method的组件添加事件
     $("*[data-method]").on("click",function(){
         // var method = $(this).data("method");
@@ -53,7 +53,13 @@ $(function () {
 
     //防止污染
     window.itsource = {
-        back:function () {
+        exitLogin:function () {
+            window.location.href="/employee/exitLogin"
+        },
+        accountManage:function () {
+            window.location.href="/employee/toAccountPage";
+        },
+        messagePage:function(){
             window.location.href="/employee/toStudentMessagePage";
         },
         skip:function () {
@@ -68,6 +74,37 @@ $(function () {
             //3.打开面板(绝对居中)
             employeeDialog.dialog("center").dialog('open').dialog("setTitle","添加数据");
 
+        },
+        updatePasswordDialogOpen:function () {
+            updatePasswordDialog.dialog("center").dialog('open').dialog("setTitle","修改密码");
+        },
+        updatePassword:function () {
+            var url = "/employee/updatePassword";
+            //拿到表单中的id
+
+
+            //提交表单的功能
+            editForm1.form('submit', {
+                url: url,
+                onSubmit: function(){
+                    //提交之前执行的功能，如果返回false，它就不会再执行了
+
+                },
+                //easyui提交后表单后 返回的值只是一个字符串
+                success: function(result){
+                    //把它变成一个Json数据 eval("("+jsonStr+")") /JSON.parse(jsonStr)
+                    //console.debug(result);
+                    result = JSON.parse(result);
+                    if(result.resultMsg){
+                        //成功之后的处理
+
+                        //关闭弹出框
+                        updatePasswordDialog.dialog('close');
+                    }else{
+                        $.messager.alert('提示','修改失败！',"info");
+                    }
+                }
+            });
         },
         edit:function () {
             //记住 ：选择一条数据才能进行修改
@@ -99,16 +136,16 @@ $(function () {
         //代表完成保存功能
         save:function () {
             //添加和修改的路径要分开
-            var url = "/employee/saveAccount";
+            var url = "/info/save";
             //拿到表单中的id
-          //  var id = $("#employeeId").val();
+            var id = $("#employeeId").val();
 
             //提交表单的功能
             editForm.form('submit', {
                 url: url,
                 onSubmit: function(){
                     //提交之前执行的功能，如果返回false，它就不会再执行了
-
+                    //return $(this).form('validate');
                 },
                 //easyui提交后表单后 返回的值只是一个字符串
                 success: function(result){
@@ -116,13 +153,13 @@ $(function () {
                     //console.debug(result);
                     result = JSON.parse(result);
                     console.debug(result.resultMsg);
-                    if(result.resultMsg==="success"){
+                    if(result.resultMsg){
                         //成功之后的处理
                         $('#dataGrid').datagrid('reload');
                         //关闭弹出框
                         employeeDialog.dialog('close');
                     }else{
-                        $.messager.alert('提示',result.resultMsg,"info");
+                        $.messager.alert('提示','添加失败了！',"info");
                     }
                 }
             });
@@ -136,7 +173,7 @@ $(function () {
                 $.messager.confirm('确认', '你确定要<span style="color:red;font-size: 20px;">狠心</span>删除我嘛？', function(r){
                     if (r){
                         //3.直接进行相应的删除
-                        $.get("/employee/deleteAccount",{id:row.id},function (result) {
+                        $.get("/info/delete",{id:row.id},function (result) {
                             console.debug(result.resultMsg);
                             if(result.resultMsg){
                                 //删除成功，刷新页面
@@ -160,9 +197,12 @@ $(function () {
             datagrid.datagrid('load',params);
         },
         search:function () {
+            $('#dataGrid').datagrid({ queryParams: form2Json("searchForm") });
+            var page = $("#dataGrid").datagrid('options').pageNumber;
+            var rows = $("#dataGrid").datagrid('options').pageSize;
             //添加和修改的路径要分开
             console.debug(1111)
-            var url = "/employee/search";
+            var url = "/info/search";
             //拿到表单中的id
             //var id = $("#employeeId").val();
             /*    if(id){
@@ -172,7 +212,10 @@ $(function () {
             searchForm.form('submit', {
                 url: url,
 
-                onSubmit: function(){
+                onSubmit: function(param){
+                    param.page=page;
+                    param.rows=rows;
+                    //param.test='张';
                     //提交之前执行的功能，如果返回false，它就不会再执行了
                     return $(this).form('validate');
                 },

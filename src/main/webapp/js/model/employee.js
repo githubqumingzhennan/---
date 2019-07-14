@@ -1,4 +1,4 @@
-//单独修改提示
+﻿//单独修改提示
 $.fn.validatebox.extensions.rules.integerRange.message = "年龄必需在 {0} 与 {1} 之间";
 //自定义验证功能
 // extend the 'equals' rule
@@ -23,7 +23,7 @@ $.extend($.fn.validatebox.defaults.rules, {
             return result == "true";
         },
         //提示信息
-        message: '用户名这辈子都会被占用'
+        message: ''
     }
 });
 
@@ -58,6 +58,9 @@ $(function () {
         },
         accountManage:function () {
             window.location.href="/employee/toAccountPage";
+        },
+        infoPage:function(){
+            window.location.href="/info/toInfoPage";
         },
         skip:function () {
             window.location.href="/employee/test";
@@ -194,6 +197,9 @@ $(function () {
             datagrid.datagrid('load',params);
         },
         search:function () {
+            $('#dataGrid').datagrid({ queryParams: form2Json("searchForm") });
+            var page = $("#dataGrid").datagrid('options').pageNumber;
+            var rows = $("#dataGrid").datagrid('options').pageSize;
             //添加和修改的路径要分开
             console.debug(1111)
             var url = "/employee/search";
@@ -206,7 +212,10 @@ $(function () {
             searchForm.form('submit', {
                 url: url,
 
-                onSubmit: function(){
+                onSubmit: function(param){
+                    param.page=page;
+                    param.rows=rows;
+                    param.test='张';
                     //提交之前执行的功能，如果返回false，它就不会再执行了
                     return $(this).form('validate');
                 },

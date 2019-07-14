@@ -1,6 +1,9 @@
 package cn.itsource.domain;
 
 public class Query {
+    private String phoneNumber;
+    private String major;
+    private String degree;
     private String name;
     private String schoolName;
     private String companyName;
@@ -8,6 +11,30 @@ public class Query {
     private Integer rows;
     private Integer minSalary;
     private Integer maxSalary;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
 
     public Integer getMinSalary() {
         return minSalary;

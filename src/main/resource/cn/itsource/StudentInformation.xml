@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itsource.dao.StudentInformationDao" >
+    <resultMap id="BaseResultMap" type="cn.itsource.domain.StudentInformation">
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+       classes,id,name,sex,age,phoneNumber,schoolName,major,degree,graduateTime
+    </sql>
+    <select id="getSize" resultType="INTEGER" parameterType ="cn.itsource.domain.Query">
+        select
+        COUNT(id)
+        from studentinformation
+        <where>
+            <if test="name !=null and name !=''">
+                name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="phoneNumber !=null and phoneNumber !=''">
+                and phoneNumber LIKE concat(concat('%',#{phoneNumber}),'%')
+            </if>
+            <if test="schoolName !=null and schoolName !=''">
+                and schoolName LIKE concat(concat('%',#{schoolName}),'%')
+            </if>
+            <if test="major !=null and major !=''">
+                and major LIKE concat(concat('%',#{major}),'%')
+            </if>
+            <if test="degree !=null and degree !=''">
+                and degree LIKE concat(concat('%',#{degree}),'%')
+            </if>
+        </where>
+        <!-- where id in
+        <foreach collection="idList" item="userId" index="index" open="(" separator="," close=")">
+            #{userId,jdbcType=DECIMAL}
+        </foreach>-->
+    </select>
+    <!-- 查询用户-->
+    <select id="search" resultMap="BaseResultMap" parameterType ="cn.itsource.domain.Query">
+        select
+        <include refid="Base_Column_List" />
+        from studentinformation
+        <where>
+            <if test="name !=null and name !=''">
+                name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="schoolName !=null and schoolName !=''">
+                and schoolName LIKE concat(concat('%',#{schoolName}),'%')
+            </if>
+            <if test="phoneNumber !=null and phoneNumber !=''">
+                and phoneNumber LIKE concat(concat('%',#{phoneNumber}),'%')
+            </if>
+            <if test="major !=null and major !=''">
+                and major LIKE concat(concat('%',#{major}),'%')
+            </if>
+            <if test="degree !=null and degree !=''">
+                and degree LIKE concat(concat('%',#{degree}),'%')
+            </if>
+
+        </where>
+        <if test="page !=null and rows !=null">
+            limit #{page},#{rows};
+        </if>
+
+    </select>
+    <!-- 插入学生信息 -->
+    <insert id="insertStudentInformation" parameterType="cn.itsource.domain.StudentInformation">
+        insert into StudentInformation
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="classes != null and classes !=''" >
+                classes,
+            </if>
+            <if test="id != null and id !=''" >
+                id,
+            </if>
+            <if test="name != null and name !=''" >
+                name,
+            </if>
+
+            <if test="sex != null and sex !=''" >
+                sex,
+            </if>
+            <if test="age != null and age !=''" >
+                age,
+            </if>
+            <if test="phoneNumber != null and phoneNumber !=''" >
+                phoneNumber,
+            </if>
+            <if test="schoolName != null and schoolName !=''" >
+                schoolName,
+            </if>
+            <if test="major != null and major !=''" >
+                major,
+            </if>
+            <if test="degree != null and degree !=''" >
+                degree,
+            </if>
+            <if test="graduateTime != null and graduateTime !=''" >
+                graduateTime
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="classes != null and classes !=''" >
+                #{classes,jdbcType=VARCHAR},
+            </if>
+            <if test="id != null and id !=''" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null and name !=''" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="sex != null and sex !=''" >
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null and age !=''" >
+                #{age,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null and phoneNumber !=''" >
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="schoolName != null and schoolName !=''" >
+                #{schoolName,jdbcType=VARCHAR},
+            </if>
+            <if test="major != null and major !=''" >
+                #{major,jdbcType=VARCHAR},
+            </if>
+            <if test="degree != null and degree !=''" >
+                #{degree,jdbcType=VARCHAR},
+            </if>
+            <if test="graduateTime != null and graduateTime !=''" >
+                #{graduateTime,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+    <!-- 批量插入学生信息 -->
+    <insert id="insertList" parameterType="java.util.List" >
+        <!--       insert into USER
+               (ID,
+               NAME,
+               PASSWORD,
+               AGE)
+               select A.* from
+               (
+               <foreach collection="list" item="user" index="index" separator="union">
+                   select
+                   #{user.id,jdbcType=INTEGER},
+                   #{user.name,jdbcType=VARCHAR},
+                   #{user.password,jdbcType=VARCHAR},
+                   #{user.age,jdbcType=INTEGER}
+                   from dual
+               </foreach>
+               ) A-->
+        insert into StudentInformation (classes,name,sex,age,phoneNumber,schoolName,major,degree,graduateTime)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.classes},#{item.name},#{item.sex},#{item.age},#{item.phoneNumber},#{item.schoolName},#{item.major},#{item.degree},#{item.graduateTime})
+        </foreach>
+    </insert>
+    <!-- 删除用户 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from StudentInformation
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <!-- 更新用户 -->
+    <update id="updateByPrimaryKey" parameterType="cn.itsource.domain.StudentInformation" >
+        update StudentInformation
+        <set >
+            <trim suffixOverrides="," >
+                <if test="classes != null and classes !=''" >
+                    classes=#{classes,jdbcType=VARCHAR},
+                </if>
+                <if test="name != null and name !=''" >
+                    name= #{name,jdbcType=VARCHAR},
+                </if>
+
+                <if test=" sex!= null and sex !=''" >
+                    sex=#{sex,sexjdbcType=VARCHAR},
+                </if>
+                <if test="age != null and age !=''" >
+                    age= #{age,jdbcType=VARCHAR},
+                </if>
+                <if test="phoneNumber != null and phoneNumber !=''" >
+                    phoneNumber= #{phoneNumber,jdbcType=VARCHAR},
+                </if>
+                <if test="schoolName != null and schoolName !=''" >
+                    schoolName=#{schoolName,jdbcType=VARCHAR},
+                </if>
+                <if test="major != null and major !=''" >
+                    major= #{major,jdbcType=VARCHAR},
+                </if>
+                <if test="degree != null and degree !=''" >
+                    degree=#{degree,jdbcType=VARCHAR},
+                </if>
+                <if test="graduateTime != null and graduateTime !=''" >
+                    graduateTime=#{graduateTime,jdbcType=VARCHAR},
+                </if>
+
+            </trim>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>
