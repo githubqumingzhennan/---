@@ -1,4 +1,4 @@
-package cn.itsource.controller;
+﻿package cn.itsource.controller;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
@@ -243,9 +243,11 @@ public class StudentMessageController {
         System.out.println(id);
         AJAXResult ajaxResult=null;
         try {
-            studentMessagesDao.deleteByPrimaryKey(id);
-            ajaxResult=new AJAXResult();
-            ajaxResult.setResultMsg("删除失败");
+            if (id==3) {
+                studentMessagesDao.deleteByPrimaryKey(id);
+                ajaxResult = new AJAXResult();
+                ajaxResult.setResultMsg("删除失败");
+            }
         }catch (Exception e){
 
         }
@@ -293,11 +295,16 @@ public class StudentMessageController {
         System.out.println(id);
         AJAXResult ajaxResult=null;
         try {
-            accountDao.deleteByPrimaryKey(id);
-            ajaxResult=new AJAXResult();
-            ajaxResult.setResultMsg("导入失败");
+            Account accountById = accountDao.getAccountById(id);
+            System.out.println(("manage".equals(accountById.getJurisdiction())));
+            if (!("manage".equals(accountById.getJurisdiction()))) {
+                System.out.println("faqqqqqqqqqqqqqqqqqqqqq");
+                accountDao.deleteByPrimaryKey(id);
+                ajaxResult = new AJAXResult();
+                ajaxResult.setResultMsg("导入失败");
+            }
         }catch (Exception e){
-
+            System.out.println(e.getStackTrace());
         }
         return ajaxResult;
 
