@@ -11,5 +11,6 @@ public interface AccountDao {
     public void deleteByPrimaryKey(Integer id);
     public Account getAccountByLogin(Account account);
     public Account getAccountByNum(Account account);
+    public Account getAccountById(Integer id);
     public List<Account> queryAll();
 }
