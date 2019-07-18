@@ -1,4 +1,4 @@
-//单独修改提示
+﻿//单独修改提示
 $.fn.validatebox.extensions.rules.integerRange.message = "年龄必需在 {0} 与 {1} 之间";
 //自定义验证功能
 // extend the 'equals' rule

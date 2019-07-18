@@ -190,6 +190,30 @@ $(function () {
                 $.messager.alert('提示','请选择一条数据再进行删除！',"warning");
             }
         },
+        //删除功能
+        deleteAll:function(){
+            //1.判断是否已经选中了一条数据
+            var row =  datagrid.datagrid("getSelected");
+
+                //2.提示是否真的要删除这条数据呢？
+                $.messager.confirm('确认', '你确定要<span style="color:red;font-size: 20px;">狠心</span>删除我嘛？', function(r){
+                    if (r){
+                        //3.直接进行相应的删除
+                        $.get("/employee/deleteAll",function (result) {
+                            console.debug(result.resultMsg);
+                            if(result.resultMsg){
+                                //删除成功，刷新页面
+                                // console.debug("faq");
+                                $('#dataGrid').datagrid("reload");
+                            }else {
+                                //删除失败，给出提示信息
+                                $.messager.alert('提示','删除失败！<br /> 原因是'+result.msg,"info");
+                            }
+                        })
+                    }
+                });
+
+        },
         search1:function(){
             //获取过滤的参数值
             var params = searchForm.serializeObject();

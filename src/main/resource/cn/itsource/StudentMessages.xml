@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.itsource.dao.StudentMessagesDao" >
     <resultMap id="BaseResultMap" type="cn.itsource.domain.StudentMessages">
+        <result column="classes" property="classes" jdbcType="VARCHAR" />
         <result column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
@@ -20,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total,grade
+        classes,id, name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total,grade
     </sql>
 
     <!-- 查询用户-->
@@ -67,10 +68,10 @@
                 and companyName LIKE concat(concat('%',#{companyName}),'%')
             </if>
             <if test="minSalary !=null and minSalary !=''">
-                and salary > #{minSalary}
+                and salary >= #{minSalary}
             </if>
             <if test="maxSalary !=null and maxSalary !=''">
-                and salary &lt; #{maxSalary}
+                and salary &lt;= #{maxSalary}
             </if>
         </where>
         <!-- where id in
@@ -85,6 +86,9 @@
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
                 id,
+            </if>
+            <if test="classes != null" >
+                classes,
             </if>
             <if test="name != null" >
                 name,
@@ -132,6 +136,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
                 #{id,jdbcType=INTEGER},
+            </if>
+            <if test="classes != null" >
+                #{classes,jdbcType=VARCHAR},
             </if>
             <if test="name != null" >
                 #{name,jdbcType=VARCHAR},
@@ -197,10 +204,10 @@
             from dual
         </foreach>
         ) A-->
-        insert into studentmessage (name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total)
+        insert into studentmessage (name,schoolName,degree,companyName,date,address,salary,fl,flmx,year_end_bonus,elses,salary_detail,salary_total,classes)
         values
         <foreach collection="list" item="item" index="index" separator="," >
-            (#{item.name},#{item.schoolName},#{item.degree},#{item.companyName},#{item.date},#{item.address},#{item.salary},#{item.fl},#{item.flmx},#{item.year_end_bonus},#{item.elses},#{item.salary_detail},#{item.salary_total})
+            (#{item.name},#{item.schoolName},#{item.degree},#{item.companyName},#{item.date},#{item.address},#{item.salary},#{item.fl},#{item.flmx},#{item.year_end_bonus},#{item.elses},#{item.salary_detail},#{item.salary_total},#{item.classes})
         </foreach>
     </insert>
 
@@ -218,6 +225,11 @@
             #{ids,jdbcType=DECIMAL}
         </foreach>
     </delete>
+    <!--删除所有-->
+    <delete id="deleteAll">
+        TRUNCATE TABLE studentmessage
+
+    </delete>
 
     <!-- 更新用户 -->
     <update id="updateByPrimaryKey" parameterType="cn.itsource.domain.StudentMessages" >
@@ -226,6 +238,9 @@
             <trim suffixOverrides="," >
                 <if test="id != null" >
                     id=#{id,jdbcType=INTEGER},
+                </if>
+                <if test="classes != null" >
+                    classes=#{classes,jdbcType=VARCHAR},
                 </if>
                 <if test="name != null" >
                     name = #{name,jdbcType=VARCHAR},
@@ -280,10 +295,10 @@
                 and companyName LIKE concat(concat('%',#{companyName}),'%')
             </if>
             <if test="minSalary !=null and minSalary !=''">
-                and salary > #{minSalary}
+                and salary >= #{minSalary}
             </if>
             <if test="maxSalary !=null and maxSalary !=''">
-                and salary &lt; #{maxSalary}
+                and salary &lt;= #{maxSalary}
             </if>
 
         </where>
@@ -308,10 +323,10 @@
                 and companyName LIKE concat(concat('%',#{companyName}),'%')
             </if>
             <if test="minSalary !=null and minSalary !=''">
-                and salary > #{minSalary}
+                and salary >= #{minSalary}
             </if>
             <if test="maxSalary !=null and maxSalary !=''">
-                and salary &lt; #{maxSalary}
+                and salary &lt;= #{maxSalary}
             </if>
 
         </where>

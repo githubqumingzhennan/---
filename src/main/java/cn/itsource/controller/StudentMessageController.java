@@ -243,17 +243,36 @@ public class StudentMessageController {
         System.out.println(id);
         AJAXResult ajaxResult=null;
         try {
-            if (id==3) {
+
                 studentMessagesDao.deleteByPrimaryKey(id);
                 ajaxResult = new AJAXResult();
                 ajaxResult.setResultMsg("删除失败");
-            }
+
         }catch (Exception e){
 
         }
     return ajaxResult;
 
     }
+    @RequestMapping("/deleteAll")
+    @ResponseBody
+    public AJAXResult deleteAll(){
+
+        AJAXResult ajaxResult=null;
+        try {
+
+            studentMessagesDao.deleteAll();
+            ajaxResult = new AJAXResult();
+            ajaxResult.setResultMsg("删除失败");
+
+        }catch (Exception e){
+
+        }
+        return ajaxResult;
+
+    }
+
+
     @RequestMapping("/test01")
 
     public  String test01(){

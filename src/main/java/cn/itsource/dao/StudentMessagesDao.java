@@ -17,4 +17,5 @@ public interface StudentMessagesDao {
     public List<StudentMessages> search(Query query);
     public List<StudentMessages> searchQuery(Query query);
     public Integer getSize(Query query);
+    public void deleteAll();
 }

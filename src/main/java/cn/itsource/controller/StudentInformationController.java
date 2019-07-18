@@ -1,4 +1,4 @@
-package cn.itsource.controller;
+﻿package cn.itsource.controller;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
@@ -95,6 +95,23 @@ public class StudentInformationController {
         return ajaxResult;
 
     }
+    @RequestMapping("/deleteAll")
+    @ResponseBody
+    public AJAXResult deleteAll(){
+
+        AJAXResult ajaxResult=null;
+        try {
+
+            studentInformationDao.deleteAll();
+            ajaxResult = new AJAXResult();
+            ajaxResult.setResultMsg("删除失败");
+
+        }catch (Exception e){
+
+        }
+        return ajaxResult;
+
+    }
     @RequestMapping("/importExcel")
     @ResponseBody
     public AJAXResult importExcel(@RequestParam("file") MultipartFile file){
@@ -147,8 +164,9 @@ public class StudentInformationController {
         List list=(ArrayList)search.get("rows");
         ExportParams exportParams = new ExportParams();
 
-        ExcelUtils.exportExcel(list, "", "导出sheet1", StudentInformation.class, "测试user.xls", response);
+        ExcelUtils.exportExcel(list, "", "导出sheet1", StudentInformation.class, "测试user1.xls", response);
 
 
     }
+
 }

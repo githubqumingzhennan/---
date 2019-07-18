@@ -14,4 +14,5 @@ public interface StudentInformationDao {
     public List<StudentInformation> search(Query query);
     public void insertList(List<StudentInformation> list);
     public Integer getSize(Query query);
+    public void deleteAll();
 }

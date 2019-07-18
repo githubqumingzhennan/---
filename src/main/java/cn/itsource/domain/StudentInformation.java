@@ -1,4 +1,4 @@
-package cn.itsource.domain;
+﻿package cn.itsource.domain;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
@@ -27,7 +27,7 @@ public class StudentInformation {
     @Excel(name = "学历", orderNum = "9", width=30)
     private String degree;
 
-    @Excel(name = "毕业时间", orderNum = "10", width=30,exportFormat="yyyy")
+    @Excel(name = "毕业时间", orderNum = "10", width=30)
 
     private String graduateTime;
 

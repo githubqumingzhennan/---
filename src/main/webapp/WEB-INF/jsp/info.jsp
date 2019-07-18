@@ -132,6 +132,9 @@
         </c:if>
         <a href="#" data-method="exitLogin" class="easyui-linkbutton" iconCls="icon-remove" plain="true">退出登录</a>
         <a href="#" data-method="updatePasswordDialogOpen" class="easyui-linkbutton" iconCls="icon-remove" plain="true">修改密码</a>
+        <c:if test="${Account.jurisdiction== 'manage'}">
+        <a href="#" data-method="deleteAll" class="easyui-linkbutton" iconCls="icon-remove" plain="true">清空数据</a>
+        </c:if>
         <c:if test="${Account.dept== '就业部'}">
             <form  id="userForm" name="userForm2"  enctype="multipart/form-data" method="post">
 
